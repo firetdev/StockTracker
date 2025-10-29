@@ -4,6 +4,9 @@
 #include <optional>
 #include <iostream>
 #include <string>
+#include <vector>
+#include <fstream>
+#include "candle.hpp"
 
 int main() {
     sf::RenderWindow window(
@@ -18,10 +21,7 @@ int main() {
 
     sf::Clock deltaClock;
 
-    // Blue rectangle
-    sf::RectangleShape rectangle(sf::Vector2f(200.f, 150.f));
-    rectangle.setFillColor(sf::Color::Blue);
-    rectangle.setPosition(sf::Vector2f(300.f, 200.f));
+    Candle myCandle(140, 80, 160, 0);  // Example candle
 
     bool buttonPressed = false;
     std::string inputText;
@@ -65,7 +65,7 @@ int main() {
         ImGui::End();
 
         window.clear(sf::Color::Black);
-        window.draw(rectangle);
+        myCandle.render(window, 400, 300);
         ImGui::SFML::Render(window);
         window.display();
     }
