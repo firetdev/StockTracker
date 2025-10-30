@@ -10,6 +10,7 @@
 #include "graph.hpp"
 
 int main() {
+    // Set up view
     sf::RenderWindow window(
         sf::VideoMode({800, 600}),
         "Stock Tracker",
@@ -29,14 +30,46 @@ int main() {
     bool buttonPressed = false;
     std::string inputText;
 
+    sf::Vector2i startingPos = {0, 0};
+    sf::Vector2i defaultPos = {400, 300};
+    
+    bool wasDownLastFrame = false;
+    
+    // Main loop
     while (window.isOpen()) {
+        // Poll events
         while (const std::optional<sf::Event> event = window.pollEvent()) {
             ImGui::SFML::ProcessEvent(window, *event);
-
+            
+            if (event->is<sf::Event::MouseButtonPressed>()) {
+                auto mouseEvent = event->getIf<sf::Event::MouseButtonPressed>();
+                if (mouseEvent->button == sf::Mouse::Button::Left) {
+                    startingPos = sf::Mouse::getPosition(window);
+                }
+            }
+            
             if (event->is<sf::Event::Closed>())
                 window.close();
         }
 
+        // Drag and pan the screen
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+            sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+            graph.offsetX = defaultPos.x + mousePos.x - startingPos.x;
+            graph.offsetY = defaultPos.y + mousePos.y - startingPos.y;
+            wasDownLastFrame = true;
+        } else {
+            if (wasDownLastFrame) {
+                defaultPos.x = graph.offsetX;
+                defaultPos.y = graph.offsetY;
+            }
+            graph.offsetX = defaultPos.x;
+            graph.offsetY = defaultPos.y;
+            
+            wasDownLastFrame = false;
+        }
+        
+        // GUI
         ImGui::SFML::Update(window, deltaClock.restart());
 
         char buffer[128];
@@ -67,6 +100,7 @@ int main() {
             buttonPressed = !buttonPressed;
         ImGui::End();
 
+        // Rendering
         window.clear(sf::Color::Black);
         graph.render(window);
         ImGui::SFML::Render(window);
