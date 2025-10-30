@@ -25,7 +25,6 @@ int main() {
     std::vector<Candle> candles = {Candle(140, 80, 160, 0), Candle(80, 100, 110, 60), Candle(100, 180, 240, 50), Candle(180, 90, 200, 60)};
     Graph graph;
     graph.load(candles);
-    //Candle myCandle(140, 80, 160, 0);  // Example candle
 
     bool buttonPressed = false;
     std::string inputText;
