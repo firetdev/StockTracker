@@ -7,6 +7,7 @@
 #include <vector>
 #include <fstream>
 #include "candle.hpp"
+#include "graph.hpp"
 
 int main() {
     sf::RenderWindow window(
@@ -21,7 +22,10 @@ int main() {
 
     sf::Clock deltaClock;
 
-    Candle myCandle(140, 80, 160, 0);  // Example candle
+    std::vector<Candle> candles = {Candle(140, 80, 160, 0), Candle(80, 100, 110, 60), Candle(100, 180, 240, 50), Candle(180, 90, 200, 60)};
+    Graph graph;
+    graph.load(candles);
+    //Candle myCandle(140, 80, 160, 0);  // Example candle
 
     bool buttonPressed = false;
     std::string inputText;
@@ -65,7 +69,7 @@ int main() {
         ImGui::End();
 
         window.clear(sf::Color::Black);
-        myCandle.render(window, 400, 300);
+        graph.render(window);
         ImGui::SFML::Render(window);
         window.display();
     }

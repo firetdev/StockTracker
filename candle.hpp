@@ -2,7 +2,6 @@
 
 #include <SFML/Graphics.hpp>
 
-// Candle class
 class Candle {
 public:
     float open;

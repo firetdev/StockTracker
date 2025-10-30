@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-void Candle::render(sf::RenderWindow& window, int x, int y) {
+void Candle::render(sf::RenderWindow& window, int x, int y) {    
     bool down;  // Whether the candle went down
     
     // Set color depending on which direction the candle moved
@@ -22,8 +22,8 @@ void Candle::render(sf::RenderWindow& window, int x, int y) {
     // Set up shapes
     sf::RectangleShape extreme(sf::Vector2f(3.f, extremeHeight));
     extreme.setFillColor(color);
-    extreme.setPosition(sf::Vector2f(x + 7.5, y + (close - low)));
-    sf::RectangleShape main(sf::Vector2f(18.f, mainHeight));
+    extreme.setPosition(sf::Vector2f(x + 10.5, y + (close - low)));
+    sf::RectangleShape main(sf::Vector2f(24.f, mainHeight));
     main.setFillColor(color);
     main.setPosition(sf::Vector2f(x, y));
     
