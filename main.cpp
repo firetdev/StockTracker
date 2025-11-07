@@ -24,7 +24,6 @@ int main() {
     sf::Clock deltaClock;
 
     Graph graph;
-    graph.load("data.txt");
 
     bool buttonPressed = false;
     std::string inputText;
@@ -54,9 +53,11 @@ int main() {
         // Drag and pan the screen
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
             sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-            graph.offsetX = defaultPos.x + mousePos.x - startingPos.x;
-            graph.offsetY = defaultPos.y + mousePos.y - startingPos.y;
-            wasDownLastFrame = true;
+            if (mousePos.y > 100) {
+                graph.offsetX = defaultPos.x + mousePos.x - startingPos.x;
+                graph.offsetY = defaultPos.y + mousePos.y - startingPos.y;
+                wasDownLastFrame = true;
+            }
         } else {
             if (wasDownLastFrame) {
                 defaultPos.x = graph.offsetX;
@@ -96,7 +97,7 @@ int main() {
         if (ImGui::InputText("##Input file", buffer, sizeof(buffer)))
             inputText = buffer;
         if (ImGui::Button("Load File"))
-            buttonPressed = !buttonPressed;
+            graph.load(inputText);
         ImGui::End();
 
         // Rendering
