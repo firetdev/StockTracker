@@ -23,9 +23,8 @@ int main() {
 
     sf::Clock deltaClock;
 
-    std::vector<Candle> candles = {Candle(140, 80, 160, 0), Candle(80, 100, 110, 60), Candle(100, 180, 240, 50), Candle(180, 90, 200, 60)};
     Graph graph;
-    graph.load(candles);
+    graph.load("data.txt");
 
     bool buttonPressed = false;
     std::string inputText;

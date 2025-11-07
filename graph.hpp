@@ -1,7 +1,7 @@
 #pragma once
 
 #include "candle.hpp"
-#include <vector>
+#include <string>
 
 class Graph {
 public:
@@ -12,5 +12,5 @@ public:
     Graph() : offsetX(400), offsetY(300) {}
     
     void render(sf::RenderWindow&);
-    void load(std::vector<Candle>);
+    void load(std::string);
 };
