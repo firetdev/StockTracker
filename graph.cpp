@@ -44,7 +44,7 @@ void Graph::load(std::string dataFile) {
             std::cerr << "Invalid input format\n";
         }
         
-        bars.push_back(Candle(std::stof(data[0]), std::stof(data[1]), std::stof(data[2]), std::stof(data[3])));
+        bars.push_back(Candle(std::stof(data[0]) * scale, std::stof(data[1]) * scale, std::stof(data[2]) * scale, std::stof(data[3]) * scale));
     }
 
     file.close();

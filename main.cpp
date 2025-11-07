@@ -20,12 +20,13 @@ int main() {
     window.setFramerateLimit(60);
     if (!ImGui::SFML::Init(window))
         std::cout << ".";
-
+    
     sf::Clock deltaClock;
 
     Graph graph;  // Initialize graph
 
     std::string inputText;  // Text input for file chooser
+    std::string inputText2;  // Text input for scale chooser
     
     // Line showing Y position of pointer
     sf::RectangleShape line(sf::Vector2f(800.0f, 1.0f));
@@ -58,7 +59,7 @@ int main() {
         // Drag and pan the screen
         if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
             sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-            if (mousePos.y > 100) {
+            if (mousePos.y > 150) {
                 graph.offsetX = defaultPos.x + mousePos.x - startingPos.x;
                 graph.offsetY = defaultPos.y + mousePos.y - startingPos.y;
                 wasDownLastFrame = true;
@@ -76,7 +77,7 @@ int main() {
         
         // Position line for Y coordinate of pointer
         sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-        if (mousePos.y > 100) {
+        if (mousePos.y > 150) {
             line.setPosition(sf::Vector2f(0.0f, mousePos.y));
         }
         
@@ -86,6 +87,10 @@ int main() {
         char buffer[128];
         strncpy(buffer, inputText.c_str(), sizeof(buffer));
         buffer[sizeof(buffer)-1] = '\0';
+        
+        char buffer2[128];
+        strncpy(buffer2, inputText2.c_str(), sizeof(buffer2));
+        buffer2[sizeof(buffer2)-1] = '\0';
         
         ImGuiWindowFlags window_flags =
             ImGuiWindowFlags_NoTitleBar |
@@ -109,6 +114,13 @@ int main() {
             inputText = buffer;
         if (ImGui::Button("Load File"))
             graph.load(inputText);  // Load file from input
+        // Set scale of graph
+        ImGui::Text("Graph scale: ");
+        ImGui::SameLine();
+        if (ImGui::InputText("##Set Scale", buffer2, sizeof(buffer2)))
+            inputText2 = buffer2;
+        if (ImGui::Button("Set Scale"))
+            graph.scale = std::stof(inputText2);  // Load file from input
         ImGui::End();
 
         // Rendering
