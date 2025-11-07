@@ -23,15 +23,19 @@ int main() {
 
     sf::Clock deltaClock;
 
-    Graph graph;
+    Graph graph;  // Initialize graph
 
-    bool buttonPressed = false;
-    std::string inputText;
-
+    std::string inputText;  // Text input for file chooser
+    
+    // Line showing Y position of pointer
+    sf::RectangleShape line(sf::Vector2f(800.0f, 1.0f));
+    line.setFillColor(sf::Color(255, 255, 255, 128));
+    
+    // Setup for graph panning
     sf::Vector2i startingPos = {0, 0};
     sf::Vector2i defaultPos = {400, 300};
     
-    bool wasDownLastFrame = false;
+    bool wasDownLastFrame = false;  // Stores whether the mouse was held down last frame
     
     // Main loop
     while (window.isOpen()) {
@@ -39,6 +43,7 @@ int main() {
         while (const std::optional<sf::Event> event = window.pollEvent()) {
             ImGui::SFML::ProcessEvent(window, *event);
             
+            // Detect starting position of mouse click
             if (event->is<sf::Event::MouseButtonPressed>()) {
                 auto mouseEvent = event->getIf<sf::Event::MouseButtonPressed>();
                 if (mouseEvent->button == sf::Mouse::Button::Left) {
@@ -69,6 +74,12 @@ int main() {
             wasDownLastFrame = false;
         }
         
+        // Position line for Y coordinate of pointer
+        sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+        if (mousePos.y > 100) {
+            line.setPosition(sf::Vector2f(0.0f, mousePos.y));
+        }
+        
         // GUI
         ImGui::SFML::Update(window, deltaClock.restart());
 
@@ -97,12 +108,13 @@ int main() {
         if (ImGui::InputText("##Input file", buffer, sizeof(buffer)))
             inputText = buffer;
         if (ImGui::Button("Load File"))
-            graph.load(inputText);
+            graph.load(inputText);  // Load file from input
         ImGui::End();
 
         // Rendering
         window.clear(sf::Color::Black);
         graph.render(window);
+        window.draw(line);
         ImGui::SFML::Render(window);
         window.display();
     }
